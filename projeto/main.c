@@ -89,13 +89,21 @@ int main(){
     /**/
 
     /* PARTE 3 - DIVIDIR MATRIZ */
-    double matrizDiag1[n][n];
-    double matrizDiag2[n][n];
 
+    //Alocando memória para divisão das matrizes
+    double **matrizDiag1;
+    matrizDiag1 = (double **) malloc (n * sizeof (double *));
+    for (int i = 0; i < n; i++)
+        matrizDiag1[i] = (double *) malloc (n * sizeof (double));
+
+    double **matrizDiag2;
+    matrizDiag2 = (double **) malloc (n * sizeof (double *));
+    for (int i = 0; i < n; i++)
+        matrizDiag2[i] = (double *) malloc (n * sizeof (double));
+
+    //Cria threads passando argumentos necessários
     int nLeituras = n*n/nThreads;
     int sobra = n*n%nThreads;
-
-   //Cria threads passando argumentos necessários
     for(i=0; i<nThreads; i++){
 	vArgumentos[i].idThread = i + 1;
 	vArgumentos[i].ordem = n;
