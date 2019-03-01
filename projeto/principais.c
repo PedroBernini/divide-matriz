@@ -11,8 +11,8 @@ typedef struct Argumentos{
     int nLeituras;
     int posicaoInicial;
     char nomeArquivo[30];
-    double *elementoDiag1;
-    double *elementoDiag2;
+    double **elementoDiag1;
+    double **elementoDiag2;
 }argumentos;
 
 //Variáveis globais do programa
@@ -69,12 +69,14 @@ void *threadDividirValores(void *vArgumentos){
 
         //Acima ou na diagonal principal
 	if(coluna>=linha){
-            argumentos->elementoDiag1[linha * argumentos->ordem + coluna] = elemento;
+            argumentos->elementoDiag1[linha][coluna] = elemento;
+	    argumentos->elementoDiag2[linha][coluna] = 0.00;
 	}
 
 	//Abaixo da diagonal principal
 	else{
-	    argumentos->elementoDiag2[linha * argumentos->ordem + coluna] = elemento;
+	    argumentos->elementoDiag2[linha][coluna] = elemento;
+	    argumentos->elementoDiag1[linha][coluna] = 0.00;
 	}
 
 	if(coluna == argumentos->ordem-1){

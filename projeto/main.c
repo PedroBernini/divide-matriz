@@ -113,8 +113,8 @@ int main(){
 	    vArgumentos[i].nLeituras += sobra;
 	vArgumentos[i].posicaoInicial = nLeituras*i + 1;
 	strcpy(vArgumentos[i].nomeArquivo,nomeArquivo);
-	vArgumentos[i].elementoDiag1 = matrizDiag1[0];
-	vArgumentos[i].elementoDiag2 = matrizDiag2[0];
+	vArgumentos[i].elementoDiag1 = matrizDiag1;
+	vArgumentos[i].elementoDiag2 = matrizDiag2;
 
 	pthread_create(&threadID[i], NULL, threadDividirValores, (void *)&vArgumentos[i]);
     }
