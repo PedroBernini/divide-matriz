@@ -159,7 +159,7 @@ int main(){
 	fprintf(arquivo2,"\n");
     }
 
-    printf("\nMatriz divida com sucesso!\n");
+    printf("\nMatriz dividida com sucesso!\n");
     printf("Nome da matriz original: %s.dat\n", nomeArquivo);
     printf("Nome da primeira matriz resultante: %s.diag1\n", nomeArquivo);
     printf("Nome da segunda matriz resultante: %s.diag2\n\n", nomeArquivo);
