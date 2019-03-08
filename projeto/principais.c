@@ -32,7 +32,6 @@ void *threadDividirValores(void *vArgumentos){
     char diretorio[100] = "";
     strcat(diretorio,"../arquivos/matrizes/");
     strcat(diretorio,argumentos->nomeArquivo);
-    strcat(diretorio,".dat");
     FILE *arquivo = fopen(diretorio,"r");
 
     //Calcula índice linha segundo posição inicial

@@ -12,30 +12,6 @@ void header() {
 }
 
 /**
- * Função auxiliar que valida se um char é um número inteiro
- * retornando também o próprio inteiro por referência
- *
- * @param c - caractere a ser validado
- * @param *inteiro - ponteiro para ter o inteiro por referência
- * @param potencia - valor auxiliar para calcular o inteiro
- *
- * @return 1 - char é um número inteiro
- * @return 0 - char não é um número inteiro 
-**/
-int validaInt(char c, int *inteiro, int potencia) {
-    if((int)c>=48 && (int)c<=57) {
-        int numero = (c-48);
-        potencia = --potencia;
-        int multiplicador = pow(10,potencia);
-
-        *inteiro += numero*multiplicador;
-
-        return 1;
-    }else
-        return 0;
-}
-
-/**
  * Função auxiliar que executa outro programa do projeto
  * para gerar uma matriz em um arquivo
  *
@@ -55,7 +31,6 @@ void geraMatriz(char linhas[6], char colunas[6], char arquivo[30]) {
     strcat(comando,colunas);
     strcat(comando,"../arquivos/matrizes/");
     strcat(comando,arquivo);
-    strcat(comando,".dat");
 
     system(comando);
 }
