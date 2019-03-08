@@ -48,6 +48,25 @@ int main(int argc, char *argv[]	){
     printf("--------------------------------------------------------\n");
 
     int i;
+    int j;
+    double elemento;
+
+    double **matrizOrg;
+    matrizOrg = (double **) malloc (n * sizeof (double *));
+    for (i = 0; i < n; i++)
+        matrizOrg[i] = (double *) malloc (n * sizeof (double));
+
+    char diretorio[100] = "";
+    strcat(diretorio,"../arquivos/matrizes/");
+    strcat(diretorio,nomeArquivo);
+    FILE *arquivo = fopen(diretorio,"r");
+
+    for(i=0;i<n;i++){
+	for(j=0;j<n;j++){
+            fscanf(arquivo,"%lf",&elemento);
+            matrizOrg[i][j] = elemento;
+        }
+    }
 
     double **matrizDiag1;
     matrizDiag1 = (double **) malloc (n * sizeof (double *));
@@ -71,9 +90,9 @@ int main(int argc, char *argv[]	){
 	if(i == (nThreads - 1))
 	    vArgumentos[i].nLeituras += sobra;
 	vArgumentos[i].posicaoInicial = nLeituras*i + 1;
-	strcpy(vArgumentos[i].nomeArquivo,nomeArquivo);
-	vArgumentos[i].elementoDiag1 = matrizDiag1;
-	vArgumentos[i].elementoDiag2 = matrizDiag2;
+	vArgumentos[i].matrizOrg = matrizOrg;
+	vArgumentos[i].matrizDiag1 = matrizDiag1;
+	vArgumentos[i].matrizDiag2 = matrizDiag2;
 
 	pthread_create(&threadID[i], NULL, threadDividirValores, (void *)&vArgumentos[i]);
     }
@@ -82,19 +101,18 @@ int main(int argc, char *argv[]	){
     for(i=0; i<nThreads; i++)
         pthread_join(threadID[i], NULL);
 
-    char diretorio[100] = "";
+    strcpy(diretorio,"");
     strcat(diretorio,"../arquivos/matrizes/");
     strcat(diretorio,arquivoFinal);
     strcat(diretorio,".diag1");
     FILE *arquivo1 = fopen(diretorio,"w");
 
-    char diretorio2[100] = "";
-    strcat(diretorio2,"../arquivos/matrizes/");
-    strcat(diretorio2,arquivoFinal);
-    strcat(diretorio2,".diag2");
-    FILE *arquivo2 = fopen(diretorio2,"w");
+    strcpy(diretorio,"");
+    strcat(diretorio,"../arquivos/matrizes/");
+    strcat(diretorio,arquivoFinal);
+    strcat(diretorio,".diag2");
+    FILE *arquivo2 = fopen(diretorio,"w");
 
-    int j;
     //Matriz com a diagonal principal e acima
     for(i=0;i<n;i++){
         fprintf(arquivo1," ");

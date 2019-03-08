@@ -10,9 +10,9 @@ typedef struct Argumentos{
     int nThreads;
     int nLeituras;
     int posicaoInicial;
-    char nomeArquivo[30];
-    double **elementoDiag1;
-    double **elementoDiag2;
+    double **matrizOrg;
+    double **matrizDiag1;
+    double **matrizDiag2;
 }argumentos;
 
 //Variáveis globais do programa
@@ -27,12 +27,6 @@ argumentos vArgumentos[16];
 **/
 void *threadDividirValores(void *vArgumentos){
     argumentos *argumentos = vArgumentos;
-
-    //Abre arquivo da matriz
-    char diretorio[100] = "";
-    strcat(diretorio,"../arquivos/matrizes/");
-    strcat(diretorio,argumentos->nomeArquivo);
-    FILE *arquivo = fopen(diretorio,"r");
 
     //Calcula índice linha segundo posição inicial
     int linha;
@@ -53,29 +47,22 @@ void *threadDividirValores(void *vArgumentos){
 
     double elemento;
 
-    //Percorre matriz até a posição inicial 
-    register int i;
-    argumentos->posicaoInicial--;
-    for(i=1;i<=argumentos->posicaoInicial;i++){
-        fscanf(arquivo,"%lf",&elemento);
-    }
-
     //Lê um elemento e salva na matriz rotacionada nLeitura vezes
     int j;
     for(j=0;j<argumentos->nLeituras;j++){
 
-        fscanf(arquivo,"%lf",&elemento);
+        elemento = argumentos->matrizOrg[linha][coluna];
 
         //Acima ou na diagonal principal
 	if(coluna>=linha){
-            argumentos->elementoDiag1[linha][coluna] = elemento;
-	    argumentos->elementoDiag2[linha][coluna] = 0.00;
+            argumentos->matrizDiag1[linha][coluna] = elemento;
+	    argumentos->matrizDiag2[linha][coluna] = 0.00;
 	}
 
 	//Abaixo da diagonal principal
 	else{
-	    argumentos->elementoDiag2[linha][coluna] = elemento;
-	    argumentos->elementoDiag1[linha][coluna] = 0.00;
+	    argumentos->matrizDiag2[linha][coluna] = elemento;
+	    argumentos->matrizDiag1[linha][coluna] = 0.00;
 	}
 
 	if(coluna == argumentos->ordem-1){
