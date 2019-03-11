@@ -17,6 +17,12 @@ int main(int argc, char *argv[]	){
     //Medir tempo de todo o programa
     clock_t tempos[4];
     tempos[0] = clock();
+	
+    if(argc != 4){
+	printf("\nArgumentos invalidos!\n");
+	printf("Tente: ./<Nome do Executavel> <Ordem da matriz> <Numero de Threads> <Nome do arquivo>\n\n");
+	return 0;
+    }
 
     //Imprime cabeçalho
     header();
