@@ -1,17 +1,22 @@
 /**
  * Objetivo: Este programa deve dividir uma matriz em outras duas por meio da diagonal principal
  * Autor: Pedro Henrique Bernini Silva.
- * Atualizado em: Sex 08 Mar 2019.
+ * Atualizado em: Sex 11 Mar 2019.
 **/
  
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
+#include <time.h>
 
 #include "principais.c"
 #include "auxiliares.c"
 
 int main(int argc, char *argv[]	){
+
+    //Medir tempo de todo o programa
+    clock_t tempos[4];
+    tempos[0] = clock();
 
     //Imprime cabeçalho
     header();
@@ -61,6 +66,13 @@ int main(int argc, char *argv[]	){
     strcat(diretorio,nomeArquivo);
     FILE *arquivo = fopen(diretorio,"r");
 
+    if (arquivo == NULL) {
+	printf("\nO arquivo '%s' não existe na pasta '../arquivos/matrizes/'\n", nomeArquivo);
+	printf("Finalizando programa.\n\n");
+	return 0;
+    }
+
+
     for(i=0;i<n;i++){
 	for(j=0;j<n;j++){
             fscanf(arquivo,"%lf",&elemento);
@@ -82,6 +94,9 @@ int main(int argc, char *argv[]	){
     int nLeituras = n*n/nThreads;
     int sobra = n*n%nThreads;
 
+    //Medir tempo de execução da divisao da matriz
+    tempos[2] = clock();
+
     for(i=0; i<nThreads; i++){
 	vArgumentos[i].idThread = i + 1;
 	vArgumentos[i].ordem = n;
@@ -100,6 +115,9 @@ int main(int argc, char *argv[]	){
     //Faz com que a main() não termine antes das outras threads
     for(i=0; i<nThreads; i++)
         pthread_join(threadID[i], NULL);
+    
+    tempos[3] = clock();
+    double TempoDivisao = (tempos[3] - tempos[2]) * 1000.0 / CLOCKS_PER_SEC;
 
     strcpy(diretorio,"");
     strcat(diretorio,"../arquivos/matrizes/");
@@ -135,9 +153,14 @@ int main(int argc, char *argv[]	){
 	fprintf(arquivo2,"\n");
     }
 
+    tempos[1] = clock();
+    double TempoPrograma = (tempos[1] - tempos[0]) * 1000.0 / CLOCKS_PER_SEC;
+
     printf("\nMatriz dividida com sucesso!\n");
     printf("Nome da primeira matriz resultante: %s.diag1\n", arquivoFinal);
     printf("Nome da segunda matriz resultante: %s.diag2\n\n", arquivoFinal);
+    printf("Tempo gasto para dividir a matriz -> %g ms.\n", TempoDivisao);
+    printf("Tempo total do programa -> %g ms.\n\n", TempoPrograma);
     
     return 0;
 }
